@@ -27,6 +27,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('posts', PostController::class)
         ->except(['index', 'show']);
 
+    Route::get('/posts', [PostController::class, 'index']);
+
     Route::post('/posts/{post}/like', [LikeController::class, 'store']);
     Route::delete('/posts/{post}/like', [LikeController::class, 'destroy']);
 
