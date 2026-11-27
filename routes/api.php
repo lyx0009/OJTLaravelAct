@@ -21,13 +21,23 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/me', [AuthController::class, 'me']);
 
-    Route::apiResource('users', UserController::class)
-        ->only(['index', 'show', 'update', 'destroy']);
+    Route::prefix('users/{user}')->group(function () {
+        Route::get('/', [UserController::class, 'show']);
+        Route::put('/', [UserController::class, 'update']);
+        Route::patch('/', [UserController::class, 'update']);
+        Route::delete('/', [UserController::class, 'destroy']);
+    });
 
-    Route::apiResource('posts', PostController::class)
-        ->except(['index', 'show']);
+    Route::prefix('posts/{post}')->group(function () {
+        Route::get('/', [PostController::class, 'show']);
+        Route::post('/', [PostController::class, 'store']);
+        Route::put('/', [PostController::class, 'update']);
+        Route::patch('/', [PostController::class, 'update']);
+        Route::delete('/', [PostController::class, 'destroy']);
+    });
 
     Route::get('/posts', [PostController::class, 'index']);
+
 
     Route::post('/posts/{post}/like', [LikeController::class, 'store']);
     Route::delete('/posts/{post}/like', [LikeController::class, 'destroy']);
